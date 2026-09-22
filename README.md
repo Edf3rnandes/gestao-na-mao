@@ -30,15 +30,15 @@ os próprios registros (`auth.uid() = user_id`).
 
 - **Demandas**: quadro estilo Kanban (Backlog / Fazendo / Feito), com
   categoria (pessoal/empresarial), prioridade, vencimento e "próxima ação".
-- **Planner**: linha do tempo do dia combinando rotina semanal fixa
-  (trabalho, treino, alimentação...) com eventos pontuais, destacando os
-  horários livres.
+- **Planner**: visões Dia / Semana / Mês combinando rotina semanal fixa
+  (trabalho, treino, alimentação...) com eventos pontuais. A visão do dia
+  destaca os horários livres; a semana e o mês também mostram os
+  vencimentos de demandas em cada data.
 - **Visão do dia**: dashboard com o que está atrasado, o que vence hoje,
   o que está em andamento e a agenda do dia.
 
 ## Próximos passos sugeridos
 
-- Calendário mensal/semanal completo
 - Planejamento de treinos (séries, cargas, progressão)
 - Assistente/secretária integrada (chat) para sugerir prioridades e redigir
   mensagens a partir das demandas

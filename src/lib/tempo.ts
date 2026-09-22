@@ -1,4 +1,4 @@
-import type { TipoBloco } from "@/lib/supabase/types";
+import type { Evento, RotinaSemanal, TipoBloco } from "@/lib/supabase/types";
 
 export const DIAS_SEMANA = [
   "Domingo",
@@ -64,6 +64,67 @@ export function formatarDataExtensa(dataIso: string) {
   });
 }
 
+export function formatarDataCurta(dataIso: string) {
+  const d = new Date(`${dataIso}T00:00:00`);
+  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+}
+
+export function formatarMesAno(dataIso: string) {
+  const d = new Date(`${dataIso}T00:00:00`);
+  const texto = d.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric",
+  });
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
+export function inicioDaSemana(dataIso: string) {
+  return somarDias(dataIso, -diaDaSemana(dataIso));
+}
+
+export function diasDaSemana(dataIso: string) {
+  const inicio = inicioDaSemana(dataIso);
+  return Array.from({ length: 7 }, (_, i) => somarDias(inicio, i));
+}
+
+export function somarMeses(dataIso: string, meses: number) {
+  const d = new Date(`${dataIso}T00:00:00`);
+  const dia = d.getDate();
+  d.setDate(1);
+  d.setMonth(d.getMonth() + meses);
+  const ultimoDiaDoMesAlvo = new Date(
+    d.getFullYear(),
+    d.getMonth() + 1,
+    0,
+  ).getDate();
+  d.setDate(Math.min(dia, ultimoDiaDoMesAlvo));
+  return paraDataLocal(d);
+}
+
+/** Grade de semanas completas (dom–sáb) cobrindo o mês da data informada. */
+export function gradeMensal(dataIso: string): string[][] {
+  const ref = new Date(`${dataIso}T00:00:00`);
+  const primeiro = new Date(ref.getFullYear(), ref.getMonth(), 1);
+  const ultimo = new Date(ref.getFullYear(), ref.getMonth() + 1, 0);
+
+  const inicioGrade = new Date(primeiro);
+  inicioGrade.setDate(inicioGrade.getDate() - primeiro.getDay());
+  const fimGrade = new Date(ultimo);
+  fimGrade.setDate(fimGrade.getDate() + (6 - ultimo.getDay()));
+
+  const semanas: string[][] = [];
+  const cursor = new Date(inicioGrade);
+  while (cursor <= fimGrade) {
+    const dias: string[] = [];
+    for (let i = 0; i < 7; i++) {
+      dias.push(paraDataLocal(cursor));
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    semanas.push(dias);
+  }
+  return semanas;
+}
+
 export function paraMinutos(hora: string) {
   const [h, m] = hora.split(":").map(Number);
   return h * 60 + m;
@@ -81,6 +142,8 @@ export function formatarMinutos(min: number) {
   return `${h}:${m}`;
 }
 
+export type VisaoPlanner = "dia" | "semana" | "mes";
+
 export interface BlocoTempo {
   id: string;
   tipo: TipoBloco;
@@ -88,6 +151,39 @@ export interface BlocoTempo {
   inicioMin: number;
   fimMin: number;
   origem: "rotina" | "evento";
+}
+
+/** Junta a rotina fixa do dia da semana com os eventos pontuais de uma data. */
+export function combinarBlocosDoDia(
+  rotinaSemanal: RotinaSemanal[],
+  eventosDoDia: Evento[],
+  dataIso: string,
+): BlocoTempo[] {
+  const diaSemana = diaDaSemana(dataIso);
+
+  const daRotina: BlocoTempo[] = rotinaSemanal
+    .filter((r) => r.dia_semana === diaSemana)
+    .map((r) => ({
+      id: r.id,
+      tipo: r.tipo,
+      titulo: r.titulo,
+      inicioMin: paraMinutos(r.hora_inicio),
+      fimMin: paraMinutos(r.hora_fim),
+      origem: "rotina" as const,
+    }));
+
+  const doDia: BlocoTempo[] = eventosDoDia
+    .filter((e) => e.data === dataIso && !e.dia_todo && e.hora_inicio && e.hora_fim)
+    .map((e) => ({
+      id: e.id,
+      tipo: e.tipo,
+      titulo: e.titulo,
+      inicioMin: paraMinutos(e.hora_inicio!),
+      fimMin: paraMinutos(e.hora_fim!),
+      origem: "evento" as const,
+    }));
+
+  return [...daRotina, ...doDia].sort((a, b) => a.inicioMin - b.inicioMin);
 }
 
 export function calcularSlotsLivres(

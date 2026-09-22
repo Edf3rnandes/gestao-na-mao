@@ -5,13 +5,12 @@ import type { Demanda, Evento, RotinaSemanal } from "@/lib/supabase/types";
 import { CategoriaBadge, PrioridadeBadge } from "@/components/demandas/demanda-badges";
 import {
   calcularSlotsLivres,
+  combinarBlocosDoDia,
   diaDaSemana,
   formatarDataExtensa,
   formatarMinutos,
   paraDataLocal,
-  paraMinutos,
   TIPO_LABEL,
-  type BlocoTempo,
 } from "@/lib/tempo";
 
 export default async function DashboardPage() {
@@ -50,26 +49,11 @@ export default async function DashboardPage() {
     .filter((d) => d.status === "fazendo")
     .slice(0, 6);
 
-  const blocosHoje: BlocoTempo[] = [
-    ...rotinaHojeTipada.map((r) => ({
-      id: r.id,
-      tipo: r.tipo,
-      titulo: r.titulo,
-      inicioMin: paraMinutos(r.hora_inicio),
-      fimMin: paraMinutos(r.hora_fim),
-      origem: "rotina" as const,
-    })),
-    ...eventosHojeTipados
-      .filter((e) => !e.dia_todo && e.hora_inicio && e.hora_fim)
-      .map((e) => ({
-        id: e.id,
-        tipo: e.tipo,
-        titulo: e.titulo,
-        inicioMin: paraMinutos(e.hora_inicio!),
-        fimMin: paraMinutos(e.hora_fim!),
-        origem: "evento" as const,
-      })),
-  ].sort((a, b) => a.inicioMin - b.inicioMin);
+  const blocosHoje = combinarBlocosDoDia(
+    rotinaHojeTipada,
+    eventosHojeTipados,
+    hoje,
+  );
 
   const livresHoje = calcularSlotsLivres(blocosHoje, 5 * 60, 24 * 60);
   const minutosLivresHoje = livresHoje.reduce(
