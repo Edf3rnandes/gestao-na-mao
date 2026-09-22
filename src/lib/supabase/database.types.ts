@@ -487,6 +487,130 @@ export type Database = {
         }
         Relationships: []
       }
+      treino_exercicios: {
+        Row: {
+          carga: string | null
+          created_at: string
+          descanso_segundos: number | null
+          id: string
+          nome: string
+          notas: string | null
+          ordem: number
+          repeticoes: string | null
+          series: number | null
+          treino_id: string
+          user_id: string
+        }
+        Insert: {
+          carga?: string | null
+          created_at?: string
+          descanso_segundos?: number | null
+          id?: string
+          nome: string
+          notas?: string | null
+          ordem?: number
+          repeticoes?: string | null
+          series?: number | null
+          treino_id: string
+          user_id?: string
+        }
+        Update: {
+          carga?: string | null
+          created_at?: string
+          descanso_segundos?: number | null
+          id?: string
+          nome?: string
+          notas?: string | null
+          ordem?: number
+          repeticoes?: string | null
+          series?: number | null
+          treino_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treino_exercicios_treino_id_fkey"
+            columns: ["treino_id"]
+            isOneToOne: false
+            referencedRelation: "treinos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      treino_sessoes: {
+        Row: {
+          created_at: string
+          data: string
+          duracao_minutos: number | null
+          id: string
+          notas: string | null
+          treino_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: string
+          duracao_minutos?: number | null
+          id?: string
+          notas?: string | null
+          treino_id?: string | null
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          duracao_minutos?: number | null
+          id?: string
+          notas?: string | null
+          treino_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treino_sessoes_treino_id_fkey"
+            columns: ["treino_id"]
+            isOneToOne: false
+            referencedRelation: "treinos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      treinos: {
+        Row: {
+          ativo: boolean
+          categoria: string
+          created_at: string
+          descricao: string | null
+          id: string
+          nome: string
+          ordem: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          categoria?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome: string
+          ordem?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          ativo?: boolean
+          categoria?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome?: string
+          ordem?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       turmas_semanais: {
         Row: {
           categoria: string

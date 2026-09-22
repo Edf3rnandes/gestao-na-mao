@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { AlertTriangle, CalendarClock, CircleDot, ListTodo } from "lucide-react";
+import {
+  AlertTriangle,
+  CalendarClock,
+  CircleDot,
+  Dumbbell,
+  ListTodo,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Demanda, Evento, RotinaSemanal } from "@/lib/supabase/types";
 import { CategoriaBadge, PrioridadeBadge } from "@/components/demandas/demanda-badges";
@@ -54,6 +60,8 @@ export default async function DashboardPage() {
     eventosHojeTipados,
     hoje,
   );
+
+  const temTreinoHoje = blocosHoje.some((b) => b.tipo === "treino");
 
   const livresHoje = calcularSlotsLivres(blocosHoje, 5 * 60, 24 * 60);
   const minutosLivresHoje = livresHoje.reduce(
@@ -175,6 +183,15 @@ export default async function DashboardPage() {
           <div className="mb-3 flex items-center gap-2">
             <CalendarClock size={18} className="text-violet-500" />
             <h2 className="font-semibold">Agenda de hoje</h2>
+            {temTreinoHoje && (
+              <Link
+                href="/treino"
+                className="ml-auto flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+              >
+                <Dumbbell size={13} />
+                treino hoje
+              </Link>
+            )}
           </div>
           {blocosHoje.length === 0 ? (
             <p className="text-sm text-neutral-500 dark:text-neutral-400">

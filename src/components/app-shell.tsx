@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Visão do dia", icon: LayoutDashboard },
   { href: "/demandas", label: "Demandas", icon: ListTodo },
   { href: "/planner", label: "Planner", icon: CalendarClock },
-  { href: "/treino", label: "Treino", icon: Dumbbell, disabled: true },
+  { href: "/treino", label: "Treino", icon: Dumbbell },
   {
     href: "/assistente",
     label: "Assistente",

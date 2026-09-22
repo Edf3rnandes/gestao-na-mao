@@ -22,9 +22,10 @@ seu projeto Supabase.
 
 ## Banco de dados
 
-As tabelas (`demandas`, `rotina_semanal`, `eventos`) vivem no schema
-`public` do projeto Supabase e têm RLS habilitado: cada usuário só enxerga
-os próprios registros (`auth.uid() = user_id`).
+As tabelas (`demandas`, `rotina_semanal`, `eventos`, `treinos`,
+`treino_exercicios`, `treino_sessoes`) vivem no schema `public` do projeto
+Supabase e têm RLS habilitado: cada usuário só enxerga os próprios
+registros (`auth.uid() = user_id`).
 
 ## O que já existe
 
@@ -35,10 +36,13 @@ os próprios registros (`auth.uid() = user_id`).
   destaca os horários livres; a semana e o mês também mostram os
   vencimentos de demandas em cada data.
 - **Visão do dia**: dashboard com o que está atrasado, o que vence hoje,
-  o que está em andamento e a agenda do dia.
+  o que está em andamento, a agenda do dia e um aviso quando hoje tem
+  treino marcado na rotina/eventos.
+- **Treino**: planos de treino com lista de exercícios (séries, repetições,
+  carga, descanso) e histórico de sessões registradas.
 
 ## Próximos passos sugeridos
 
-- Planejamento de treinos (séries, cargas, progressão)
 - Assistente/secretária integrada (chat) para sugerir prioridades e redigir
-  mensagens a partir das demandas
+  mensagens a partir das demandas — precisa de uma chave da API da
+  Anthropic configurada no deploy.

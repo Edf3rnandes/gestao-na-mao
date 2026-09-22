@@ -30,3 +30,29 @@ type EventoRow = Database["public"]["Tables"]["eventos"]["Row"];
 export interface Evento extends Omit<EventoRow, "tipo"> {
   tipo: Exclude<TipoBloco, "livre">;
 }
+
+export type CategoriaTreino =
+  | "musculacao"
+  | "volei"
+  | "cardio"
+  | "mobilidade"
+  | "geral";
+
+type TreinoRow = Database["public"]["Tables"]["treinos"]["Row"];
+export interface Treino extends Omit<TreinoRow, "categoria"> {
+  categoria: CategoriaTreino;
+}
+
+export type TreinoExercicio =
+  Database["public"]["Tables"]["treino_exercicios"]["Row"];
+
+export type TreinoSessao =
+  Database["public"]["Tables"]["treino_sessoes"]["Row"];
+
+export interface TreinoComExercicios extends Treino {
+  exercicios: TreinoExercicio[];
+}
+
+export interface TreinoSessaoComTreino extends TreinoSessao {
+  treino: { id: string; nome: string } | null;
+}
