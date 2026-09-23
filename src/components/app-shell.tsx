@@ -10,17 +10,18 @@ import {
   ListTodo,
   LogOut,
   Menu,
-  MessageCircleHeart,
   X,
 } from "lucide-react";
 import { signOut } from "@/app/(app)/actions";
 
+// Assistente (/assistente) fica fora do menu por enquanto: depende de uma
+// ANTHROPIC_API_KEY paga que não está configurada. O código continua no
+// repo, pronto pra reativar bastando adicionar o item de volta aqui.
 const NAV_ITEMS = [
   { href: "/", label: "Visão do dia", icon: LayoutDashboard },
   { href: "/demandas", label: "Demandas", icon: ListTodo },
   { href: "/planner", label: "Planner", icon: CalendarClock },
   { href: "/treino", label: "Treino", icon: Dumbbell },
-  { href: "/assistente", label: "Assistente", icon: MessageCircleHeart },
 ];
 
 export function AppShell({
