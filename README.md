@@ -9,6 +9,7 @@ integrada com planejamento diário.
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Supabase (Postgres + Auth) para dados e login
 - dnd-kit para o drag-and-drop do quadro de demandas
+- API da Anthropic (Claude) para a assistente de chat
 
 ## Rodando localmente
 
@@ -18,7 +19,8 @@ npm run dev
 ```
 
 Crie um `.env.local` (veja `.env.example`) com a URL e a chave pública do
-seu projeto Supabase.
+seu projeto Supabase, e uma `ANTHROPIC_API_KEY` (console.anthropic.com)
+para a assistente de chat funcionar.
 
 ## Banco de dados
 
@@ -40,9 +42,12 @@ registros (`auth.uid() = user_id`).
   treino marcado na rotina/eventos.
 - **Treino**: planos de treino com lista de exercícios (séries, repetições,
   carga, descanso) e histórico de sessões registradas.
+- **Assistente**: chat (Claude, via API da Anthropic) com contexto ao vivo
+  das demandas em aberto e da agenda do dia — ajuda a priorizar, sugerir
+  horários e redigir mensagens. Precisa de `ANTHROPIC_API_KEY` configurada
+  no servidor.
 
 ## Próximos passos sugeridos
 
-- Assistente/secretária integrada (chat) para sugerir prioridades e redigir
-  mensagens a partir das demandas — precisa de uma chave da API da
-  Anthropic configurada no deploy.
+- Dar memória de conversas à assistente (hoje o histórico do chat vive só
+  na sessão do navegador).

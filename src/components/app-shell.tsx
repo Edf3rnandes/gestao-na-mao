@@ -20,12 +20,7 @@ const NAV_ITEMS = [
   { href: "/demandas", label: "Demandas", icon: ListTodo },
   { href: "/planner", label: "Planner", icon: CalendarClock },
   { href: "/treino", label: "Treino", icon: Dumbbell },
-  {
-    href: "/assistente",
-    label: "Assistente",
-    icon: MessageCircleHeart,
-    disabled: true,
-  },
+  { href: "/assistente", label: "Assistente", icon: MessageCircleHeart },
 ];
 
 export function AppShell({
@@ -44,22 +39,6 @@ export function AppShell({
         const active =
           item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
         const Icon = item.icon;
-
-        if (item.disabled) {
-          return (
-            <span
-              key={item.href}
-              title="Em breve"
-              className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2 text-sm text-neutral-400 dark:text-neutral-600"
-            >
-              <Icon size={18} />
-              {item.label}
-              <span className="ml-auto rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
-                em breve
-              </span>
-            </span>
-          );
-        }
 
         return (
           <Link
